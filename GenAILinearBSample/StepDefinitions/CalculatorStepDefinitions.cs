@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using TechTalk.SpecFlow;
 
 namespace GenAIProject.StepDefinitions
 {
