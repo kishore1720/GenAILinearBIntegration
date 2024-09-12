@@ -1,11 +1,7 @@
-# -*- mode: yaml -*-
-# This example configuration for provides basic automations to get started with gitStream.
-# View the gitStream quickstart for more examples: https://docs.gitstream.cm/examples/
+---
 manifest:
-  version: 1.0
-
+  version: 1
 automations:
-  # Add a label that indicates how many minutes it will take to review the PR.
   estimated_time_to_review:
     if:
       - true
@@ -13,24 +9,22 @@ automations:
       - action: add-label@v1
         args:
           label: "{{ calc.etr }} min review"
-          color: {{ colors.red if (calc.etr >= 20) else (colors.yellow if (calc.etr >= 5) else colors.green) }}
-
-  # Inform PR authors when they fail to reference Jira tickets in the PR title or description.
+          color: "{{ colors.red if (calc.etr >= 20) else (colors.yellow if (calc.etr >= 5)
+            else colors.green) }}"
   label_missing_jira_info:
     if:
       - "{{ not (has.jira_ticket_in_title or has.jira_ticket_in_desc) }}"
     run:
       - action: add-label@v1
         args:
-          label: "missing-jira"
+          label: missing-jira
           color: "{{ colors.red }}"
       - action: add-comment@v1
         args:
-          comment: |
+          comment: >
             This PR is missing a Jira ticket reference in the title or description.
-            Please add a Jira ticket reference to the title or description of this PR.
 
-  # Post a comment that lists the best experts for the files that were modified.
+            Please add a Jira ticket reference to the title or description of this PR.
   explain_code_experts:
     if:
       - true
@@ -38,8 +32,6 @@ automations:
       - action: explain-code-experts@v1
         args:
           gt: 10
-
-  # Post a comment for all PRs to prompt the PR author to indicate whether they used Copilot to assist coding in this PR.
   comment_copilot_prompt:
     if:
       - true
@@ -51,24 +43,14 @@ automations:
 
             - [ ] Copilot Assisted
             - [ ] Not Copilot Assisted
-
-# Trigger automations on PR creation
 on:
   - pr_created
-
-# +----------------------------------------------------------------------------+
-# | Custom Expressions                                                         |
-# | https://docs.gitstream.cm/how-it-works/#custom-expressions                 |
-# +----------------------------------------------------------------------------+
-
 calc:
   etr: "{{ branch | estimatedReviewTime }}"
-
 has:
-  jira_ticket_in_title: "{{ pr.title | includes(regex=r/\b[A-Za-z]+-\d+\b/) }}"
-  jira_ticket_in_desc: "{{ pr.description | includes(regex=r/atlassian.net\/browse\/\w{1,}-\d{3,4}/) }}"
-
+  jira_ticket_in_title: "{{ pr.title | includes(regex=r/\b[A-Za-z]+-+\b/) }}"
+  jira_ticket_in_desc: "{{ pr.description | includes(regex=r/atlassian.net/browse/{1,}-{3,4}/) }}"
 colors:
-  red: 'b60205'
-  yellow: 'fbca04'
-  green: '0e8a16'
+  red: b60205
+  yellow: fbca04
+  green: 0e8a16
