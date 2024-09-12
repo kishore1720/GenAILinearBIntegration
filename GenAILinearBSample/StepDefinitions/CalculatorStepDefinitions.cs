@@ -31,6 +31,7 @@ namespace GenAIProject.StepDefinitions
         public void ThenTheResultShouldBe(int result)
         {
             Assert.That(result.Equals(C));
+            Console.WriteLine(C);
         }
     }
 }
