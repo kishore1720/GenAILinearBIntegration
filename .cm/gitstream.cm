@@ -1,0 +1,16 @@
+rules:
+  - when: pull_request.opened
+    actions:
+      - notify: "New pull request opened by @{{author}}"
+      - assign_reviewer: "@team-lead"
+      - run: "ci/build"
+
+  - when: pull_request.merged
+    actions:
+      - notify: "Pull request merged by @{{author}}"
+      - run: "deploy/staging"
+
+  - when: pull_request.label == "urgent"
+    actions:
+      - notify: "Urgent pull request, needs priority review!"
+      - block_merge: true
