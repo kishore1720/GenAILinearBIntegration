@@ -1,0 +1,21 @@
+name: GenAI PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  genai:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up GenAI
+        uses: genai/gh-action@v1
+        with:
+          api_key: ${{ secrets.GENAI_API_KEY }}
+
+      - name: Analyze PR
+        run: genai analyze pr
