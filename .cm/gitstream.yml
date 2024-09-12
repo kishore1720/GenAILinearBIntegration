@@ -1,0 +1,56 @@
+---
+manifest:
+  version: 1
+automations:
+  estimated_time_to_review:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "{{ calc.etr }} min review"
+          color: "{{ colors.red if (calc.etr >= 20) else (colors.yellow if (calc.etr >= 5)
+            else colors.green) }}"
+  label_missing_jira_info:
+    if:
+      - "{{ not (has.jira_ticket_in_title or has.jira_ticket_in_desc) }}"
+    run:
+      - action: add-label@v1
+        args:
+          label: missing-jira
+          color: "{{ colors.red }}"
+      - action: add-comment@v1
+        args:
+          comment: >
+            This PR is missing a Jira ticket reference in the title or description.
+
+            Please add a Jira ticket reference to the title or description of this PR.
+  explain_code_experts:
+    if:
+      - true
+    run:
+      - action: explain-code-experts@v1
+        args:
+          gt: 10
+  comment_copilot_prompt:
+    if:
+      - true
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            Please mark whether you used Copilot to assist coding in this PR
+
+            - [ ] Copilot Assisted
+            - [ ] Not Copilot Assisted
+on:
+  - pr_created
+calc:
+  etr: "{{ branch | estimatedReviewTime }}"
+has:
+  jira_ticket_in_title: "{{ pr.title | includes(regex=r/\b[A-Za-z]+-+\b/) }}"
+  jira_ticket_in_desc: "{{ pr.description | includes(regex=r/atlassian.net/browse/{1,}-{3,4}/) }}"
+colors:
+  red: b60205
+  yellow: fbca04
+  green: 0e8a16
