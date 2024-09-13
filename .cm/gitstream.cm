@@ -187,9 +187,9 @@ labels:
   - name: Ruby
     resources: r/.rb$/
   - name: CSS
-    resources: r/.css/
+    resources: r/.css$/
 - name: C#
-    resources: r/.c#$/
+    resources: r/.c#/
 
 label_approvals: 
     if:  
