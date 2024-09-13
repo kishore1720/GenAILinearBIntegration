@@ -189,7 +189,7 @@ labels:
   - name: CSS
     resources: r/.css/
 - name: C#
-    resources: r/.C#$/
+    resources: r/.c#$/
 
 label_approvals: 
     if:  
