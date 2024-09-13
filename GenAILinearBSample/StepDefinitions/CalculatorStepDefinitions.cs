@@ -15,12 +15,15 @@ namespace GenAIProject.StepDefinitions
         {
             A = a;
             Console.WriteLine(A);
+            Console.WriteLine(A);
+            Console.WriteLine(A);
         }
 
         [Given("the second number is (.*)")]
         public void GivenTheSecondNumberIs(int b)
         {
             B = b;
+            Console.WriteLine(B);
         }
 
         [When("the two numbers are added")]
