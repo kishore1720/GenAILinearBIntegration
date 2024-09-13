@@ -160,7 +160,7 @@ automations:
         args:
           label: ✌️ Ready to merge
           color: {{ colors.green }}
-# Label PRs by Language.
+
 {% for item in labels %}
   label_{{ item.name }}_pr:
       if:
@@ -188,6 +188,25 @@ labels:
     resources: r/.rb$/
   - name: CSS
     resources: r/.css/
+- name: C#
+    resources: r/.C#$/
+
+label_approvals: 
+    if:  
+      - {{ pr.approvals | length > 0 }}
+    run:
+      - action: add-label@v1
+        args:
+          label: {{ pr.approvals | length }} Approved Review(s)
+
+percent_new_code:
+    if:
+      - true
+    run: 
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is {{ changes.ratio }}% new code.
 
 
 # +----------------------------------------------------------------------------+
