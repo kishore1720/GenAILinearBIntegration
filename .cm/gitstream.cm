@@ -161,44 +161,6 @@ automations:
           label: ✌️ Ready to merge
           color: {{ colors.green }}
 
-{% for item in labels %}
-  label_{{ item.name }}_pr:
-      if:
-        - {{ files | match(regex=item.resources) | some }}
-      run:
-        - action: add-label@v1
-          args:
-            label: '{{ item.name }}'
-  {% endfor %}
-
-labels:
-  - name: Java
-    resources: r/.java$/
-  - name: Rust
-    resources: r/.rs$/
-  - name: HTML
-    resources: r/.html$/
-  - name: JavaScript
-    resources: r/.js$/
-  - name: Python
-    resources: r/.py$/
-  - name: Golang
-    resources: r/.go$/
-  - name: Ruby
-    resources: r/.rb$/
-  - name: CSS
-    resources: r/.css$/
-- name: C#
-    resources: r/.c#/
-
-label_approvals: 
-    if:  
-      - {{ pr.approvals | length > 0 }}
-    run:
-      - action: add-label@v1
-        args:
-          label: {{ pr.approvals | length }} Approved Review(s)
-
 percent_new_code:
     if:
       - true
