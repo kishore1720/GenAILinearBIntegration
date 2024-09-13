@@ -24,6 +24,8 @@ namespace GenAIProject.StepDefinitions
         {
             B = b;
             Console.WriteLine(B);
+            Console.WriteLine(B);
+            Console.WriteLine(B);
         }
 
         [When("the two numbers are added")]
