@@ -14,6 +14,7 @@ namespace GenAIProject.StepDefinitions
         public void GivenTheFirstNumberIs(int a)
         {
             A = a;
+            Console.WriteLine(A);
         }
 
         [Given("the second number is (.*)")]
